@@ -22,9 +22,11 @@ public class GameManager : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+
         var hoge1 = baggage.transform.position.x - player1.transform.position.x;
         var hoge2 = baggage.transform.position.x - player2.transform.position.x;
 
+        //プレイヤー同士のX軸がオブジェクトのX軸と近ければ動く
         if((hoge1 >= -interval && hoge1 <= interval) && (hoge2 >= -interval && hoge2 <= interval))
         {
             baggage.transform.position = new Vector3(player1.transform.position.x, 0F, -1F);

@@ -20,12 +20,6 @@ public class RigidbodyCharacter : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-        // オブジェクトの重力方向を設定
-        gravity = -Physics.gravity;
-        if(downGravity)
-        {
-            gravity *= -1F;
-        }
         // 移動速度を初期化
         velocity = Vector3.zero;
         // 物理演算を取得
@@ -37,11 +31,12 @@ public class RigidbodyCharacter : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
         // 接地していなければ重力方向へ落下
-		if(!isGrounded)
+        if (!isGrounded)
         {
             _rigidbody.AddForce(gravity);
         }
-	}
+        Debug.DrawLine(transform.position, transform.position + gravity.normalized, Color.red);
+    }
 
     private void FixedUpdate() {
         // Rigidbodyの移動処理を利用する
@@ -63,9 +58,25 @@ public class RigidbodyCharacter : MonoBehaviour {
         }
     }
 
+    public void InvertGravity() {
+        // 重力の設定を反転
+        downGravity = !downGravity;
+        isGrounded = false;
+
+        // 重力方向の設定
+        if (downGravity)
+        {
+            gravity = Physics.gravity;
+        }
+        else
+        {
+            gravity = -Physics.gravity;
+        }
+    }
+
     private void OnCollisionEnter(Collision collision) {
         // 自身の下方向に線を飛ばして接触したら接地
-        if(Physics.Linecast(transform.position, gravity.normalized))
+        if(Physics.Linecast(transform.position, transform.position + gravity.normalized))
         {
             isGrounded = true;
         }
